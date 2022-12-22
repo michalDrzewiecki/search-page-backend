@@ -12,4 +12,5 @@ export interface ProductInterface {
   state: StateEnum;
   status: StatusEnum[];
   locations: string[];
+  soldAmount: number;
 }

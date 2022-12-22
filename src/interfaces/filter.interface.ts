@@ -3,4 +3,5 @@ export interface FilterInterface {
   limit: number;
   sort: string;
   filter: string
+  search: string;
 }

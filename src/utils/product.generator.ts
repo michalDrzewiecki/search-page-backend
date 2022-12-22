@@ -1,6 +1,5 @@
 import { CurrencyEnum, GuaranteeEnum, StateEnum, StatusEnum } from '../enums';
-import { ProductInterface } from '../interfaces';
-import { PriceInterface } from '../interfaces/price.interface';
+import { PriceInterface, ProductInterface } from '../interfaces';
 
 export class ProductGenerator {
 
@@ -24,6 +23,7 @@ export class ProductGenerator {
         state: this.getState(),
         status: this.getStatus(price),
         locations: this.getLocations(),
+        soldAmount: this.getSoldAmount()
       })
     }
     return products;
@@ -102,7 +102,6 @@ export class ProductGenerator {
       return Array.from(statuses).filter(status => status !== StatusEnum.specialOffer);
     }
     return Array.from(statuses);
-
   }
 
   private getLocations(): string[] {
@@ -119,6 +118,10 @@ export class ProductGenerator {
       locations.push(availableLocations[index]);
     }
     return locations;
+  }
+
+  private getSoldAmount(): number {
+    return this.rand(0, 10000);
   }
 
   private rand(minValue: number, maxValue: number): number {

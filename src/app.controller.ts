@@ -8,16 +8,18 @@ export class AppController {
 
   @Get('')
   public async getProducts(
-    @Query('offset', new ParseIntPipe()) offset: number,
-    @Query('limit', new ParseIntPipe()) limit: number,
+    @Query('offset', new DefaultValuePipe(0), new ParseIntPipe()) offset: number,
+    @Query('limit', new DefaultValuePipe(100), new ParseIntPipe()) limit: number,
     @Query('filter', new DefaultValuePipe('')) filter: string,
-    @Query('sort', new DefaultValuePipe('')) sort: string
+    @Query('sort', new DefaultValuePipe('')) sort: string,
+    @Query('search', new DefaultValuePipe('')) search: string
   ): Promise<ProductInterface[]> {
     return this.appService.getProducts({
       offset,
       limit,
       filter,
-      sort
+      sort,
+      search
     });
   }
 
