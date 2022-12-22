@@ -1,6 +1,6 @@
 import { Controller, DefaultValuePipe, Get, ParseIntPipe, Query } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ProductInterface } from './interfaces';
+import { ProductInterface, ResourceResponseInterface } from './interfaces';
 
 @Controller('products')
 export class AppController {
@@ -13,7 +13,7 @@ export class AppController {
     @Query('filter', new DefaultValuePipe('')) filter: string,
     @Query('sort', new DefaultValuePipe('')) sort: string,
     @Query('search', new DefaultValuePipe('')) search: string
-  ): Promise<ProductInterface[]> {
+  ): Promise<ResourceResponseInterface<ProductInterface>> {
     return this.appService.getProducts({
       offset,
       limit,
@@ -22,6 +22,7 @@ export class AppController {
       search
     });
   }
+
 
   @Get('recommended')
   public async getRecommended(): Promise<ProductInterface[]> {

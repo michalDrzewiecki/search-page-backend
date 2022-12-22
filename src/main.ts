@@ -6,7 +6,7 @@ import { ProductGenerator } from './utils/product.generator';
 export let generatedProducts: ProductInterface[];
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {cors: true});
   await app.listen(8080);
 
   generatedProducts = new ProductGenerator(3271).generate();

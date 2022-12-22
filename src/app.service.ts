@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { FilterOperatorEnum, StatusEnum } from './enums';
-import { FilterInterface, ProductInterface, SingleFilterInterface, SortDataInterface } from './interfaces';
+import {
+  FilterInterface,
+  ProductInterface,
+  ResourceResponseInterface,
+  SingleFilterInterface,
+  SortDataInterface
+} from './interfaces';
 import { generatedProducts } from './main';
 import { FilterParser } from './utils/filter.parser';
 import { SortParser } from './utils/sort.parser';
@@ -16,13 +22,16 @@ export class AppService {
     filter,
     sort,
     search,
- }: FilterInterface): ProductInterface[] {
+ }: FilterInterface): ResourceResponseInterface<ProductInterface> {
     const searchedProducts = search ? this.getSearchedProducts(generatedProducts, search) : generatedProducts;
     const filterData = new FilterParser(filter).getFilterData()
     const filteredProducts = filterData ? this.getFilteredProducts(searchedProducts, filterData) : searchedProducts;
     const sortData = new SortParser(sort).getSortData();
     const sortedProducts = sortData ? this.getSortedProducts(filteredProducts, sortData) : filteredProducts;
-    return sortedProducts.slice(offset, limit);
+    return {
+      data: sortedProducts.slice(offset, limit),
+      count: sortedProducts.length
+    }
   }
 
   public getRecommendedProducts(): ProductInterface[] {

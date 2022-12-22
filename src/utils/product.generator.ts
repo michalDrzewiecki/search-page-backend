@@ -15,7 +15,7 @@ export class ProductGenerator {
       products.push({
         id: i.toString(),
         imgUrl: this.getImageUrl(),
-        name: this.getName(35),
+        name: this.getName(50),
         price,
         ramAmount: this.getRamAmount(),
         producer: this.getProducer(),
@@ -45,7 +45,7 @@ export class ProductGenerator {
 
   private getName(length: number): string {
     let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789- ';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result += characters.charAt(this.rand(0, charactersLength));
