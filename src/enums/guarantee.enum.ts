@@ -1,7 +1,7 @@
 export enum GuaranteeEnum {
   months6 = 'months6',
-  month12 = 'month12',
-  month24 = 'month24',
-  month36 = 'month36'
+  month12 = 'months12',
+  month24 = 'months24',
+  month36 = 'months36'
 }
 

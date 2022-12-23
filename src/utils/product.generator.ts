@@ -11,7 +11,7 @@ export class ProductGenerator {
   public generate(): ProductInterface[] {
     const products: ProductInterface[] = [];
     for (let i = 0; i < this.amount; i++) {
-      const price = this.getPrize();
+      const price = this.getPrice();
       products.push({
         id: i.toString(),
         imgUrl: this.getImageUrl(),
@@ -23,7 +23,8 @@ export class ProductGenerator {
         state: this.getState(),
         status: this.getStatus(price),
         locations: this.getLocations(),
-        soldAmount: this.getSoldAmount()
+        soldAmount: this.getSoldAmount(),
+        processor: this.getProcessor(),
       })
     }
     return products;
@@ -53,7 +54,7 @@ export class ProductGenerator {
     return result;
   }
 
-  private getPrize(): PriceInterface {
+  private getPrice(): PriceInterface {
     const isPromotion = this.rand(0, 10) > 7;
     const current = this.rand(499, 49999);
     return {
@@ -124,7 +125,18 @@ export class ProductGenerator {
     return this.rand(0, 10000);
   }
 
+  private getProcessor(): string {
+    const availableProcessors = [
+      'Intel Core i3',
+      'Intel Core i5',
+      'Intel Core i7',
+      'Intel Pentium'
+    ];
+    const index = this.rand(0, availableProcessors.length - 1);
+    return availableProcessors[index];
+  }
+
   private rand(minValue: number, maxValue: number): number {
-    return Math.round(Math.random() * maxValue) + minValue;
+    return Math.round(Math.random() * (maxValue - minValue)) + minValue;
   }
 }

@@ -68,6 +68,9 @@ export class AppService {
         const {values, field, operator} = singleFilterData;
         const fieldCheck = field.split('.');
         const value = fieldCheck[1] ? product[fieldCheck[0]][fieldCheck[1]] : product[field];
+        if (!value) {
+          continue;
+        }
         let filterResult: boolean;
         switch (operator) {
           case FilterOperatorEnum.gt:

@@ -13,4 +13,5 @@ export interface ProductInterface {
   status: StatusEnum[];
   locations: string[];
   soldAmount: number;
+  processor: string;
 }
