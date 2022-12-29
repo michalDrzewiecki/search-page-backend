@@ -1,13 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { FilterOperatorEnum, StatusEnum } from './enums';
+import { getAllCategories, getCategories } from './config/categories';
+import { getFilters } from './config/filters/filter-config/filter-config';
+import { getSortConfig } from './config/sort/sort-config';
+import { CategoriesEnum, FilterOperatorEnum, MarketEnum, StatusEnum } from './enums';
 import {
+  FilterConfigResponseInterface,
   FilterInterface,
-  ProductInterface,
   ResourceResponseInterface,
   SingleFilterInterface,
   SortDataInterface
 } from './interfaces';
+import { CategoryInterface } from './interfaces/category.interface';
+import { ProductInterface } from './interfaces/product';
 import { generatedProducts } from './main';
+import { SubcategoryType } from './types/subcategory.type';
 import { FilterParser } from './utils/filter.parser';
 import { SortParser } from './utils/sort.parser';
 
@@ -16,6 +22,36 @@ import { SortParser } from './utils/sort.parser';
 @Injectable()
 export class AppService {
 
+  public getFilterConfigResponse(market: MarketEnum, category?: CategoriesEnum, subcategory?: SubcategoryType): FilterConfigResponseInterface {
+    const filters = getFilters(market, category, subcategory);
+    const sort = getSortConfig(market);
+    return {
+      filters,
+      sort
+    }
+  }
+
+  public getCategories(market: MarketEnum): CategoryInterface[] {
+    const categories = getCategories(market);
+    return categories.map(category => {
+      const subcategories = category.subcategories;
+      let totalProductAmountInCategory: number = 0;
+      const extendedSubcategories = subcategories.map(subcategory => {
+        const products = generatedProducts.filter(p => p.subcategory === subcategory.name);
+        totalProductAmountInCategory += products.length;
+        return {
+          ...subcategory,
+          count: products.length
+        }
+      });
+      return {
+        ...category,
+        subcategories: extendedSubcategories,
+        count: totalProductAmountInCategory
+      }
+    });
+  }
+
   public getProducts({
     offset,
     limit,
@@ -23,24 +59,64 @@ export class AppService {
     sort,
     search,
  }: FilterInterface): ResourceResponseInterface<ProductInterface> {
-    const searchedProducts = search ? this.getSearchedProducts(generatedProducts, search) : generatedProducts;
+    const {data, detectedSubcategory, detectedCategory} = this.getSearchedProducts(generatedProducts, search);
     const filterData = new FilterParser(filter).getFilterData()
-    const filteredProducts = filterData ? this.getFilteredProducts(searchedProducts, filterData) : searchedProducts;
+    const filteredProducts = filterData ? this.getFilteredProducts(data, filterData) : data;
     const sortData = new SortParser(sort).getSortData();
     const sortedProducts = sortData ? this.getSortedProducts(filteredProducts, sortData) : filteredProducts;
     return {
-      data: sortedProducts.slice(offset, limit),
-      count: sortedProducts.length
+      count: sortedProducts.length,
+      data: sortedProducts.splice(offset, limit),
+      detectedSubcategory,
+      detectedCategory
     }
   }
 
-  public getRecommendedProducts(): ProductInterface[] {
-    return generatedProducts.filter(product => product.status.includes(StatusEnum.recommended)).slice(0, 4);
+  public getRecommendedProducts(category: CategoriesEnum): ProductInterface[] {
+    const recommendedProducts = generatedProducts.filter(product => product.category === category && product.status.includes(StatusEnum.recommended));
+    const selectedProducts: ProductInterface[] = [];
+    const selectedIndexes: number[] = [];
+    if (recommendedProducts.length <= 4) {
+      return recommendedProducts;
+    }
+    while (selectedProducts.length !== 4) {
+      const rand = Math.round(Math.random() * ((recommendedProducts.length - 1)));
+      if (selectedIndexes.includes(rand)) {
+        continue;
+      }
+      selectedProducts.push(recommendedProducts[rand]);
+      selectedIndexes.push(rand);
+    }
+    return selectedProducts;
   }
 
-  private getSearchedProducts(products: ProductInterface[], search: string): ProductInterface[] {
-    const forbiddenFields = ['id', 'imgUrl'];
-    return products.filter(product => {
+  private getSearchedProducts(products: ProductInterface[], search: string): Pick<ResourceResponseInterface<ProductInterface>, 'data' | 'detectedCategory' | 'detectedSubcategory'>{
+    if (!search) {
+      return {
+        data: products
+      };
+    }
+    const allCategoriesAndSubcategories = getAllCategories();
+    const existingCategory = allCategoriesAndSubcategories.find(category => category.displayName.toLowerCase().includes(search.toLowerCase()))?.name;
+    const existingSubcategory = allCategoriesAndSubcategories
+      .map(category => category.subcategories)
+      .flat()
+      ?.find(subcategory => subcategory.displayName.toLowerCase().includes(search.toLowerCase()))?.name;
+
+    if (existingSubcategory) {
+      return {
+        data: products.filter(p => p.subcategory === existingSubcategory),
+        detectedSubcategory: existingSubcategory as SubcategoryType
+      };
+    } else if (existingCategory) {
+      return {
+        data: products.filter(p => p.category === existingCategory),
+        detectedCategory: existingCategory as CategoriesEnum
+      };
+    }
+
+    const forbiddenFields = ['id', 'imgUrl', 'category', 'subcategory'];
+    const foundProducts = products.filter(product => {
       for (const key in product) {
         if (forbiddenFields.includes(key)) {
           continue;
@@ -58,7 +134,11 @@ export class AppService {
         }
       }
       return false;
-    })
+    });
+
+    return {
+      data: foundProducts
+    }
   }
 
   private getFilteredProducts(products: ProductInterface[], filterData: SingleFilterInterface[]): ProductInterface[] {

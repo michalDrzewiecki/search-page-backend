@@ -1,19 +1,39 @@
-import { Controller, DefaultValuePipe, Get, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, DefaultValuePipe, Get, ParseEnumPipe, ParseIntPipe, Query } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ProductInterface, ResourceResponseInterface } from './interfaces';
+import { CategoriesEnum, MarketEnum } from './enums';
+import { FilterConfigResponseInterface, ResourceResponseInterface } from './interfaces';
+import { CategoryInterface } from './interfaces/category.interface';
+import { ProductInterface } from './interfaces/product';
+import { SubcategoryType } from './types/subcategory.type';
 
 @Controller('products')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get('categories')
+  public getCategories(
+    @Query('market', new DefaultValuePipe(MarketEnum.en), new ParseEnumPipe(MarketEnum)) market: MarketEnum
+  ): CategoryInterface[] {
+    return this.appService.getCategories(market);
+  }
+
+  @Get('filters')
+  public getFilters(
+    @Query('market', new DefaultValuePipe(MarketEnum.en), new ParseEnumPipe(MarketEnum)) market: MarketEnum,
+    @Query('category') category?: string,
+    @Query('subcategory') subcategory?: string
+  ): FilterConfigResponseInterface {
+    return this.appService.getFilterConfigResponse(market, category as CategoriesEnum, subcategory as SubcategoryType);
+  }
+
   @Get('')
-  public async getProducts(
+  public getProducts(
     @Query('offset', new DefaultValuePipe(0), new ParseIntPipe()) offset: number,
     @Query('limit', new DefaultValuePipe(100), new ParseIntPipe()) limit: number,
     @Query('filter', new DefaultValuePipe('')) filter: string,
     @Query('sort', new DefaultValuePipe('')) sort: string,
-    @Query('search', new DefaultValuePipe('')) search: string
-  ): Promise<ResourceResponseInterface<ProductInterface>> {
+    @Query('search', new DefaultValuePipe('')) search: string,
+  ): ResourceResponseInterface<ProductInterface> {
     return this.appService.getProducts({
       offset,
       limit,
@@ -23,9 +43,10 @@ export class AppController {
     });
   }
 
-
   @Get('recommended')
-  public async getRecommended(): Promise<ProductInterface[]> {
-    return this.appService.getRecommendedProducts();
+  public async getRecommended(
+    @Query('category', new ParseEnumPipe(CategoriesEnum)) category: CategoriesEnum,
+  ): Promise<ProductInterface[]> {
+    return this.appService.getRecommendedProducts(category);
   }
 }
