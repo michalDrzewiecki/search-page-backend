@@ -6,8 +6,8 @@ export abstract class GameGenerator extends ProductGenerator {
   protected readonly category: CategoriesEnum = CategoriesEnum.games;
   protected readonly imageUrls: string[] = [
     'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2022/7/pr_2022_7_21_13_49_41_19_00.jpg',
-    'https://www.x-kom.pl/p/1100275-gra-na-playstation-4-playstation-diablo-iv.html',
-    'https://www.x-kom.pl/p/693046-gra-na-xbox-series-x-s-xbox-grand-theft-auto-trilogy-the-definitive-edition.html'
+    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2022/12/pr_2022_12_14_9_36_24_821_01.jpg',
+    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2021/11/pr_2021_11_2_12_54_11_840_00.jpg'
   ];
   protected readonly producers: string[] = ['EA', 'Blizzard', 'PiranhaBytes'];
 

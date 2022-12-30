@@ -7,6 +7,13 @@ const filterConfigs: FilterConfigInterface[] = [
     resource: CategoriesEnum.games,
     filters: [
       {
+        type: FilterElementTypeEnum.checkbox,
+        title: 'Producent',
+        filterElementName: 'producer',
+        selectAllOption: true,
+        isHidden: false
+      },
+      {
         type: FilterElementTypeEnum.radio,
         title: 'Wersja',
         filterElementName: 'version',
@@ -34,6 +41,13 @@ const filterConfigs: FilterConfigInterface[] = [
         filters: [
           {
             type: FilterElementTypeEnum.checkbox,
+            title: 'Producent',
+            filterElementName: 'producer',
+            selectAllOption: true,
+            isHidden: false
+          },
+          {
+            type: FilterElementTypeEnum.checkbox,
             title: 'Kolor',
             filterElementName: 'color',
             isHidden: false
@@ -45,6 +59,13 @@ const filterConfigs: FilterConfigInterface[] = [
         filters: [
           {
             type: FilterElementTypeEnum.checkbox,
+            title: 'Producent',
+            filterElementName: 'producer',
+            selectAllOption: true,
+            isHidden: false
+          },
+          {
+            type: FilterElementTypeEnum.checkbox,
             title: 'Typ ekranu',
             filterElementName: 'screenType',
             isHidden: false
@@ -54,6 +75,13 @@ const filterConfigs: FilterConfigInterface[] = [
       {
         resource: AccessoriesSubcategoriesEnum.memory,
         filters: [
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producent',
+            filterElementName: 'producer',
+            selectAllOption: true,
+            isHidden: false
+          },
           {
             type: FilterElementTypeEnum.range,
             title: 'Pamięć RAM',
@@ -73,6 +101,13 @@ const filterConfigs: FilterConfigInterface[] = [
       {
         resource: AccessoriesSubcategoriesEnum.keyboards,
         filters: [
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producent',
+            filterElementName: 'producer',
+            selectAllOption: true,
+            isHidden: false
+          },
           {
             type: FilterElementTypeEnum.checkbox,
             title: 'Przeznaczenie',
@@ -101,6 +136,13 @@ const filterConfigs: FilterConfigInterface[] = [
     resource: CategoriesEnum.electronics,
     filters: [
       {
+        type: FilterElementTypeEnum.checkbox,
+        title: 'Producent',
+        filterElementName: 'producer',
+        selectAllOption: true,
+        isHidden: false
+      },
+      {
         type: FilterElementTypeEnum.range,
         title: 'Pamięć RAM',
         filterElementName: 'ramAmount',
@@ -122,6 +164,13 @@ const filterConfigs: FilterConfigInterface[] = [
         filters: [
           {
             type: FilterElementTypeEnum.checkbox,
+            title: 'Producent',
+            filterElementName: 'producer',
+            selectAllOption: true,
+            isHidden: false
+          },
+          {
+            type: FilterElementTypeEnum.checkbox,
             title: 'Procesor',
             filterElementName: 'processor',
             isHidden: true
@@ -137,6 +186,13 @@ const filterConfigs: FilterConfigInterface[] = [
       {
         resource: ElectronicsSubcategoriesEnum.smartphones,
         filters: [
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producent',
+            filterElementName: 'producer',
+            selectAllOption: true,
+            isHidden: false
+          },
           {
             type: FilterElementTypeEnum.checkbox,
             title: 'Procesor',
@@ -160,6 +216,13 @@ const filterConfigs: FilterConfigInterface[] = [
       {
         resource: ElectronicsSubcategoriesEnum.laptops,
         filters: [
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producent',
+            filterElementName: 'producer',
+            selectAllOption: true,
+            isHidden: false
+          },
           {
             type: FilterElementTypeEnum.checkbox,
             title: 'Procesor',

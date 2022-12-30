@@ -1,5 +1,5 @@
 export enum GamesSubcategoriesEnum {
-  pc = 'pc',
+  pc = 'pcgames',
   xbox = 'xbox',
   playStation = 'playStation'
 }

@@ -33,13 +33,17 @@ export class AppController {
     @Query('filter', new DefaultValuePipe('')) filter: string,
     @Query('sort', new DefaultValuePipe('')) sort: string,
     @Query('search', new DefaultValuePipe('')) search: string,
+    @Query('category') category?: string,
+    @Query('subcategory') subcategory?: string
   ): ResourceResponseInterface<ProductInterface> {
     return this.appService.getProducts({
       offset,
       limit,
       filter,
       sort,
-      search
+      search,
+      category,
+      subcategory
     });
   }
 

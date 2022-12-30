@@ -17,13 +17,6 @@ const baseFilterConfig: FilterElementType[] = [
     isHidden: false
   },
   {
-    type: FilterElementTypeEnum.checkbox,
-    title: 'Producent',
-    filterElementName: 'producer',
-    selectAllOption: true,
-    isHidden: false
-  },
-  {
     type: FilterElementTypeEnum.select,
     title: 'Gwarancja',
     filterElementName: 'guarantee',

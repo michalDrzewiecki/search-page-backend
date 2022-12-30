@@ -58,8 +58,11 @@ export class AppService {
     filter,
     sort,
     search,
+    category,
+    subcategory
  }: FilterInterface): ResourceResponseInterface<ProductInterface> {
-    const {data, detectedSubcategory, detectedCategory} = this.getSearchedProducts(generatedProducts, search);
+    const filteredByCategoryProducts = this.getFilteredByCategoryProducts(generatedProducts, category, subcategory);
+    const {data, detectedSubcategory, detectedCategory} = this.getSearchedProducts(filteredByCategoryProducts, search, category, subcategory);
     const filterData = new FilterParser(filter).getFilterData()
     const filteredProducts = filterData ? this.getFilteredProducts(data, filterData) : data;
     const sortData = new SortParser(sort).getSortData();
@@ -90,32 +93,36 @@ export class AppService {
     return selectedProducts;
   }
 
-  private getSearchedProducts(products: ProductInterface[], search: string): Pick<ResourceResponseInterface<ProductInterface>, 'data' | 'detectedCategory' | 'detectedSubcategory'>{
+  private getSearchedProducts(products: ProductInterface[], search: string, category?: string, subcategory?: string): Pick<ResourceResponseInterface<ProductInterface>, 'data' | 'detectedCategory' | 'detectedSubcategory'>{
     if (!search) {
       return {
         data: products
       };
     }
-    const allCategoriesAndSubcategories = getAllCategories();
-    const existingCategory = allCategoriesAndSubcategories.find(category => category.displayName.toLowerCase().includes(search.toLowerCase()))?.name;
-    const existingSubcategory = allCategoriesAndSubcategories
-      .map(category => category.subcategories)
-      .flat()
-      ?.find(subcategory => subcategory.displayName.toLowerCase().includes(search.toLowerCase()))?.name;
+    if (!category && !subcategory) {
+      const allCategoriesAndSubcategories = getAllCategories();
+      const existingCategory = allCategoriesAndSubcategories.find(category => category.displayName.toLowerCase().includes(search.toLowerCase()))?.name;
+      const existingSubcategory = allCategoriesAndSubcategories
+        .map(category => category.subcategories)
+        .flat()
+        ?.find(subcategory => subcategory.displayName.toLowerCase().includes(search.toLowerCase()))?.name;
 
-    if (existingSubcategory) {
-      return {
-        data: products.filter(p => p.subcategory === existingSubcategory),
-        detectedSubcategory: existingSubcategory as SubcategoryType
-      };
-    } else if (existingCategory) {
-      return {
-        data: products.filter(p => p.category === existingCategory),
-        detectedCategory: existingCategory as CategoriesEnum
-      };
+      if (existingSubcategory) {
+        const category = allCategoriesAndSubcategories.find(category => category.subcategories.some(subcategory => subcategory.name === existingSubcategory))?.name;
+        return {
+          data: products.filter(p => p.subcategory === existingSubcategory),
+          detectedCategory: category as CategoriesEnum,
+          detectedSubcategory: existingSubcategory as SubcategoryType
+        };
+      } else if (existingCategory) {
+        return {
+          data: products.filter(p => p.category === existingCategory),
+          detectedCategory: existingCategory as CategoriesEnum
+        };
+      }
     }
 
-    const forbiddenFields = ['id', 'imgUrl', 'category', 'subcategory'];
+    const forbiddenFields = ['id', 'imgUrl'];
     const foundProducts = products.filter(product => {
       for (const key in product) {
         if (forbiddenFields.includes(key)) {
@@ -176,6 +183,16 @@ export class AppService {
       }
       return isValid;
     });
+  }
+
+  private getFilteredByCategoryProducts(products: ProductInterface[], category?: string, subcategory?: string): ProductInterface[] {
+    if (!category) {
+      return products;
+    }
+    if (!subcategory) {
+      return products.filter(product => product.category === category);
+    }
+    return products.filter(product => product.category === category && product.subcategory === subcategory);
   }
 
   private getSortedProducts(products: ProductInterface[], {value, field}: SortDataInterface): ProductInterface[] {

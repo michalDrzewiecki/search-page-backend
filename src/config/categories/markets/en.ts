@@ -53,7 +53,7 @@ const categoriesConfig: CategoryInterface[] = [
     subcategories: [
       {
         name: GamesSubcategoriesEnum.pc,
-        displayName: 'xbox games'
+        displayName: 'pc games'
       },
       {
         name: GamesSubcategoriesEnum.xbox,

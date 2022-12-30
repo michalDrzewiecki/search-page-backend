@@ -4,4 +4,6 @@ export interface FilterInterface {
   sort: string;
   filter: string
   search: string;
+  category?: string;
+  subcategory?: string;
 }

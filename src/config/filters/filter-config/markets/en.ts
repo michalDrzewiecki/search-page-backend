@@ -22,6 +22,13 @@ const filterConfigs: FilterConfigInterface[] = [
         ],
         isHidden: false
       },
+      {
+        type: FilterElementTypeEnum.checkbox,
+        title: 'Producer',
+        filterElementName: 'producer',
+        selectAllOption: true,
+        isHidden: false
+      },
     ],
     subResources: []
   },
@@ -38,6 +45,13 @@ const filterConfigs: FilterConfigInterface[] = [
             filterElementName: 'color',
             isHidden: false
           },
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producer',
+            filterElementName: 'producer',
+            selectAllOption: true,
+            isHidden: false
+          },
         ]
       },
       {
@@ -47,6 +61,13 @@ const filterConfigs: FilterConfigInterface[] = [
             type: FilterElementTypeEnum.checkbox,
             title: 'Screen type',
             filterElementName: 'screenType',
+            isHidden: false
+          },
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producer',
+            filterElementName: 'producer',
+            selectAllOption: true,
             isHidden: false
           },
         ]
@@ -66,6 +87,13 @@ const filterConfigs: FilterConfigInterface[] = [
               minValue: 0,
               isInteger: true
             },
+            isHidden: false
+          },
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producer',
+            filterElementName: 'producer',
+            selectAllOption: true,
             isHidden: false
           },
         ]
@@ -93,6 +121,13 @@ const filterConfigs: FilterConfigInterface[] = [
             ],
             isHidden: false
           },
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producer',
+            filterElementName: 'producer',
+            selectAllOption: true,
+            isHidden: false
+          },
         ]
       }
     ]
@@ -114,7 +149,7 @@ const filterConfigs: FilterConfigInterface[] = [
           isInteger: true
         },
         isHidden: false
-      },
+      }
     ],
     subResources: [
       {
@@ -130,6 +165,13 @@ const filterConfigs: FilterConfigInterface[] = [
             type: FilterElementTypeEnum.checkbox,
             title: 'System',
             filterElementName: 'system',
+            isHidden: false
+          },
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producer',
+            filterElementName: 'producer',
+            selectAllOption: true,
             isHidden: false
           },
         ]
@@ -153,6 +195,13 @@ const filterConfigs: FilterConfigInterface[] = [
             type: FilterElementTypeEnum.checkbox,
             title: 'Camera',
             filterElementName: 'camera',
+            isHidden: false
+          },
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producer',
+            filterElementName: 'producer',
+            selectAllOption: true,
             isHidden: false
           },
         ]
@@ -184,6 +233,13 @@ const filterConfigs: FilterConfigInterface[] = [
               minValue: 1000,
               isInteger: true
             },
+            isHidden: false
+          },
+          {
+            type: FilterElementTypeEnum.checkbox,
+            title: 'Producer',
+            filterElementName: 'producer',
+            selectAllOption: true,
             isHidden: false
           },
         ]

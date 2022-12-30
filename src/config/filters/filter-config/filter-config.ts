@@ -2,7 +2,7 @@ import { CategoriesEnum, FilterElementTypeEnum, MarketEnum } from '../../../enum
 import { generatedProducts } from '../../../main';
 import { SubcategoryType } from '../../../types/subcategory.type';
 import { getBaseFilterConfig } from '../base-filter-config/base-filter-config';
-import { MultipleOptionsFilterElementInterface } from '../interfaces';
+import { MultipleOptionsFilterElementInterface, SelectFilterElementInterface } from '../interfaces';
 import { FilterElementType } from '../types';
 import enFilterConfig from './markets/en';
 import plFilterConfig from './markets/pl';
@@ -23,6 +23,13 @@ const extendFilters = (filters: FilterElementType[], category?: CategoriesEnum, 
     }
     const {options, filterElementName} = filterData as MultipleOptionsFilterElementInterface;
     if (options?.length) {
+      const defaultOption = (filterData as SelectFilterElementInterface)?.defaultOption;
+      if (defaultOption) {
+        options.unshift({
+          displayName: defaultOption,
+          value: ''
+        });
+      }
       return filterData;
     }
     const availableProducts = generatedProducts.filter(product => {
@@ -51,6 +58,13 @@ const extendFilters = (filters: FilterElementType[], category?: CategoriesEnum, 
       displayName: value,
       value
     }));
+    const defaultOption = (filterData as SelectFilterElementInterface)?.defaultOption;
+    if (defaultOption) {
+      generatedOptions.unshift({
+        displayName: defaultOption,
+        value: ''
+      });
+    }
     return {
       ...filterData,
       options: generatedOptions
