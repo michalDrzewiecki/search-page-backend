@@ -1,9 +1,10 @@
-import { Controller, DefaultValuePipe, Get, ParseEnumPipe, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, DefaultValuePipe, Get, Param, ParseEnumPipe, ParseIntPipe, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CategoriesEnum, MarketEnum } from './enums';
 import { FilterConfigResponseInterface, ResourceResponseInterface } from './interfaces';
 import { CategoryInterface } from './interfaces/category.interface';
 import { ProductInterface } from './interfaces/product';
+import { ProductToDisplayInterface } from './interfaces/product/product-to-display.interface';
 import { SubcategoryType } from './types/subcategory.type';
 
 @Controller('products')
@@ -52,5 +53,13 @@ export class AppController {
     @Query('category', new ParseEnumPipe(CategoriesEnum)) category: CategoriesEnum,
   ): Promise<ProductInterface[]> {
     return this.appService.getRecommendedProducts(category);
+  }
+
+  @Get('single/:id')
+  public async getSingleProductData(
+    @Param('id') id: string,
+    @Query('market', new DefaultValuePipe(MarketEnum.en), new ParseEnumPipe(MarketEnum)) market: MarketEnum
+  ): Promise<ProductToDisplayInterface> {
+    return this.appService.getProduct(id, market);
   }
 }

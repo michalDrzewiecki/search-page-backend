@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { getAllCategories, getCategories } from './config/categories';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { getCategories } from './config/categories';
 import { getFilters } from './config/filters/filter-config/filter-config';
+import { getProductPerMarket } from './config/product-fields';
 import { getSortConfig } from './config/sort/sort-config';
 import { CategoriesEnum, FilterOperatorEnum, MarketEnum, StatusEnum } from './enums';
 import {
@@ -12,6 +13,7 @@ import {
 } from './interfaces';
 import { CategoryInterface } from './interfaces/category.interface';
 import { ProductInterface } from './interfaces/product';
+import { ProductToDisplayInterface } from './interfaces/product/product-to-display.interface';
 import { generatedProducts } from './main';
 import { SubcategoryType } from './types/subcategory.type';
 import { FilterParser } from './utils/filter.parser';
@@ -21,6 +23,14 @@ import { SortParser } from './utils/sort.parser';
 // to reuse it somewhere it has to be rewritten
 @Injectable()
 export class AppService {
+
+  public getProduct(id: string, market: MarketEnum): ProductToDisplayInterface {
+    const product = generatedProducts.find(product => product.id === id);
+    if (!product) {
+      throw new BadRequestException(`Product with ${id} id does not exist`);
+    }
+    return getProductPerMarket(product, market);
+  }
 
   public getFilterConfigResponse(market: MarketEnum, category?: CategoriesEnum, subcategory?: SubcategoryType): FilterConfigResponseInterface {
     const filters = getFilters(market, category, subcategory);
@@ -62,7 +72,7 @@ export class AppService {
     subcategory
  }: FilterInterface): ResourceResponseInterface<ProductInterface> {
     const filteredByCategoryProducts = this.getFilteredByCategoryProducts(generatedProducts, category, subcategory);
-    const {data, detectedSubcategory, detectedCategory} = this.getSearchedProducts(filteredByCategoryProducts, search, category, subcategory);
+    const {data, detectedSubcategory, detectedCategory} = this.getSearchedProducts(filteredByCategoryProducts, search);
     const filterData = new FilterParser(filter).getFilterData()
     const filteredProducts = filterData ? this.getFilteredProducts(data, filterData) : data;
     const sortData = new SortParser(sort).getSortData();
@@ -93,35 +103,12 @@ export class AppService {
     return selectedProducts;
   }
 
-  private getSearchedProducts(products: ProductInterface[], search: string, category?: string, subcategory?: string): Pick<ResourceResponseInterface<ProductInterface>, 'data' | 'detectedCategory' | 'detectedSubcategory'>{
+  private getSearchedProducts(products: ProductInterface[], search: string): Pick<ResourceResponseInterface<ProductInterface>, 'data' | 'detectedCategory' | 'detectedSubcategory'>{
     if (!search) {
       return {
         data: products
       };
     }
-    if (!category && !subcategory) {
-      const allCategoriesAndSubcategories = getAllCategories();
-      const existingCategory = allCategoriesAndSubcategories.find(category => category.displayName.toLowerCase().includes(search.toLowerCase()))?.name;
-      const existingSubcategory = allCategoriesAndSubcategories
-        .map(category => category.subcategories)
-        .flat()
-        ?.find(subcategory => subcategory.displayName.toLowerCase().includes(search.toLowerCase()))?.name;
-
-      if (existingSubcategory) {
-        const category = allCategoriesAndSubcategories.find(category => category.subcategories.some(subcategory => subcategory.name === existingSubcategory))?.name;
-        return {
-          data: products.filter(p => p.subcategory === existingSubcategory),
-          detectedCategory: category as CategoriesEnum,
-          detectedSubcategory: existingSubcategory as SubcategoryType
-        };
-      } else if (existingCategory) {
-        return {
-          data: products.filter(p => p.category === existingCategory),
-          detectedCategory: existingCategory as CategoriesEnum
-        };
-      }
-    }
-
     const forbiddenFields = ['id', 'imgUrl'];
     const foundProducts = products.filter(product => {
       for (const key in product) {
