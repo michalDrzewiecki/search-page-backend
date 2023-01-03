@@ -136,13 +136,6 @@ const filterConfigs: FilterConfigInterface[] = [
     resource: CategoriesEnum.electronics,
     filters: [
       {
-        type: FilterElementTypeEnum.checkbox,
-        title: 'Producent',
-        filterElementName: 'producer',
-        selectAllOption: true,
-        isHidden: false
-      },
-      {
         type: FilterElementTypeEnum.range,
         title: 'Pamięć RAM',
         filterElementName: 'ramAmount',

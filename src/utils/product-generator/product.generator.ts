@@ -97,6 +97,9 @@ export abstract class ProductGenerator {
   }
 
   private getLocations(): string[] {
+    if (+this.id % 100 === 0) {
+      return [];
+    }
     const availableLocations = ['Gdańsk', 'Kraków', 'Łódź', 'Wrocław'];
     const locations: string[] = [];
     for (const availableLocation of availableLocations) {

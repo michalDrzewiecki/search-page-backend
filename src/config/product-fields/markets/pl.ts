@@ -35,10 +35,10 @@ const productsFieldConfig: ProductFieldPerMarketInterface[] = [
     displayName: 'Kolor',
     valueTranslator: (value: string) => {
       const translations = {
-        'black': 'czarny',
-        'white': 'biały',
-        'green': 'zielony',
-        'grey': 'szary'
+        'black': 'Czarny',
+        'white': 'Biały',
+        'green': 'Zielony',
+        'grey': 'Szary'
       };
       return translations[value] || value;
     }

@@ -25,7 +25,7 @@ export class BagProductGenerator extends ProductGenerator {
   }
 
   private getColor(): string {
-    const availableColors = ['black', 'white', 'green', 'grey'];
+    const availableColors = ['Black', 'White', 'Green', 'Grey'];
     const index = this.rand(0, availableColors.length - 1);
     return availableColors[index];
   }
