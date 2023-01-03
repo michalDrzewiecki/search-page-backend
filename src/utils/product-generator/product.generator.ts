@@ -105,10 +105,6 @@ export abstract class ProductGenerator {
         locations.push(availableLocation);
       }
     }
-    if (!locations.length) {
-      const index = this.rand(0, availableLocations.length - 1);
-      locations.push(availableLocations[index]);
-    }
     return locations;
   }
 
