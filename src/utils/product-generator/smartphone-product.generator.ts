@@ -6,12 +6,12 @@ import { ElectronicsProductGenerator } from './electronics-product.generator';
 export class SmartphoneProductGenerator extends ElectronicsProductGenerator {
   protected readonly subcategory: SubcategoryType = ElectronicsSubcategoriesEnum.smartphones;
   protected readonly imageUrls: string[] = [
-    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2021/11/pr_2021_11_16_10_15_5_751_00.jpg',
-    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2022/12/pr_2022_12_8_16_8_34_304_02.jpg',
-    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2021/7/pr_2021_7_2_12_8_13_628_00.jpg',
-    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2022/12/pr_2022_12_8_16_11_55_140_02.jpg',
-    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2022/2/pr_2022_2_25_10_13_39_674_00.jpg',
-    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2021/4/pr_2021_4_21_13_51_38_38_02.jpg'
+    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2022/9/pr_2022_9_22_22_25_18_614_08.jpg',
+    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2021/7/pr_2021_7_8_9_2_28_148_00.jpg',
+    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2022/7/pr_2022_7_7_15_39_40_549_01.jpg',
+    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2022/9/pr_2022_9_22_22_6_58_326_08.jpg',
+    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2022/5/pr_2022_5_18_12_16_11_980_00.jpg',
+    'https://cdn.x-kom.pl/i/setup/images/prod/big/product-medium,,2022/8/pr_2022_8_29_10_59_43_268_00.jpg'
   ];
   protected readonly producers: string[] = ['Apple', 'Samsung', 'MyPhone', 'Xiaomi', 'Huawei'];
   protected systems: string[] = ['Android', 'iOS', 'Windows Phone'];

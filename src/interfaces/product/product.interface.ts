@@ -3,6 +3,11 @@ import { ElectronicsSubcategoriesEnum } from '../../enums/subcategories';
 import { SubcategoryType } from '../../types/subcategory.type';
 import { PriceInterface } from '../price.interface';
 
+export interface RatingInterface {
+  maxRating: number;
+  rating: number;
+}
+
 export interface ProductInterface {
   id: string;
   imgUrl: string;
@@ -16,4 +21,5 @@ export interface ProductInterface {
   soldAmount: number;
   category: CategoriesEnum;
   subcategory: SubcategoryType;
+  ratingData: RatingInterface;
 }

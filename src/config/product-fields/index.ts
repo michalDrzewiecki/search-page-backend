@@ -30,6 +30,7 @@ export const getProductPerMarket = (product: ProductInterface, market: MarketEnu
     soldAmount,
     category,
     subcategory,
+    ratingData,
     ...restParams
   } = product;
   const baseProduct = {
@@ -41,7 +42,8 @@ export const getProductPerMarket = (product: ProductInterface, market: MarketEnu
     locations,
     soldAmount,
     category,
-    subcategory
+    subcategory,
+    ratingData
   };
 
   let additionalFields = {};

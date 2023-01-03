@@ -1,6 +1,6 @@
 import { CategoriesEnum, CurrencyEnum, GuaranteeEnum, StateEnum, StatusEnum } from '../../enums';
 import { PriceInterface } from '../../interfaces';
-import { ProductInterface } from '../../interfaces/product';
+import { ProductInterface, RatingInterface } from '../../interfaces/product';
 import { SubcategoryType } from '../../types/subcategory.type';
 
 export abstract class ProductGenerator {
@@ -30,7 +30,8 @@ export abstract class ProductGenerator {
       locations: this.getLocations(),
       soldAmount: this.getSoldAmount(),
       category: this.category,
-      subcategory: this.subcategory
+      subcategory: this.subcategory,
+      ratingData: this.getRating()
     }
   }
 
@@ -113,6 +114,15 @@ export abstract class ProductGenerator {
 
   private getSoldAmount(): number {
     return this.rand(0, 10000);
+  }
+
+  private getRating(): RatingInterface {
+    const maxRating = 6;
+    const rating = this.rand(0, maxRating);
+    return {
+      maxRating,
+      rating
+    };
   }
 
   protected rand(minValue: number, maxValue: number): number {
