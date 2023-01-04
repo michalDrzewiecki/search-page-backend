@@ -39,7 +39,7 @@ const baseFilterConfig: FilterElementType[] = [
       }
     ],
     defaultOption: 'Wybierz długość gwarancji',
-    details: 'Okres trwania gwaracnji zapewniony przez producenta',
+    details: 'Okres trwania gwarancji zapewniony przez producenta',
     isHidden: false
   },
   {

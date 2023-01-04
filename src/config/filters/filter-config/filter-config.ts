@@ -24,7 +24,7 @@ const extendFilters = (filters: FilterElementType[], category?: CategoriesEnum, 
     const {options, filterElementName} = filterData as MultipleOptionsFilterElementInterface;
     if (options?.length) {
       const defaultOption = (filterData as SelectFilterElementInterface)?.defaultOption;
-      if (defaultOption) {
+      if (defaultOption && !options.find(option => option.value === '')) {
         options.unshift({
           displayName: defaultOption,
           value: ''
